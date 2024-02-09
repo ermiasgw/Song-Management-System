@@ -26,12 +26,14 @@ const NavBar = () => {
         }
     ]
   return (
-    <Flex flexDirection={"column"} width={100} bg={"red"} height={"100%"} p={10} >
-        {links.map((link) =>(
-            <Link href={link.href}>{link.title}</Link>
-         ))}
+    <Flex flexDirection={"column"} width={200} bg={theme.colors.light} height={"100%"} p={20} py={100} alignItems={"center"} justifyContent={"space-between"} >
+        <Flex flexDirection={"column"} width={"100%"} alignItems={"center"}>
+            {links.map((link) =>(
+                <Link href={link.href} p={10} >{link.title}</Link>
+            ))}   
+        </Flex>
 
-        <Button onClick={() => dispatch(authActions.logoutrequest())}>logout</Button>
+        <Button bg={theme.colors.primary} onClick={() => dispatch(authActions.logoutrequest())}>logout</Button>
          
     </Flex>
   )

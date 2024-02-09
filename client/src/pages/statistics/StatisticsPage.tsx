@@ -2,10 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { statisticsActions } from "../../store/statistics";
 import { useEffect } from "react";
 import { RootState } from "../../store";
+import { Box, Heading } from "rebass";
+import { useTheme } from "@emotion/react";
 
 
 
 const StatisticsPage = () => {
+    const theme = useTheme()
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -16,8 +19,8 @@ const StatisticsPage = () => {
     console.log(statistics)
 
     return (
-      <div>
-        <h1>statistics</h1>
+      <Box p={20} width={"100%"}>
+        <Heading>statistics</Heading>
         { statistics && (
             <>
             <ul>
@@ -30,7 +33,7 @@ const StatisticsPage = () => {
             </ul>
             { statistics.no_song_in_each_artist && (
                 <>
-                <h3>Number of Songs in Each Artist:</h3>
+                <h5>Number of Songs in Each Artist:</h5>
                 <ul>
                     
                     {statistics.no_song_in_each_artist.map((artist) => (
@@ -43,7 +46,7 @@ const StatisticsPage = () => {
                     }
             { statistics.no_song_in_each_generes && (
                 <>
-                <h3>Number of Songs in Each Genre:</h3>
+                <h5>Number of Songs in Each Genre:</h5>
                 <ul>
                     
                     {statistics.no_song_in_each_generes.map((genere) => (
@@ -57,7 +60,7 @@ const StatisticsPage = () => {
             
             { statistics.no_album_in_each_artist && (
                 <>
-                <h3>Number of Albums in Each Artist:</h3>
+                <h5>Number of Albums in Each Artist:</h5>
                 <ul>
                     
                     {statistics.no_album_in_each_artist.map((artist) => (
@@ -71,7 +74,7 @@ const StatisticsPage = () => {
 
             { statistics.no_song_in_each_album && (
                 <>
-                <h3>Number of Songs in Each Album:</h3>
+                <h5>Number of Songs in Each Album:</h5>
                 <ul>
                     
                     {statistics.no_song_in_each_album.map((album) => (
@@ -90,7 +93,7 @@ const StatisticsPage = () => {
             
         }
         
-      </div>
+      </Box>
 
     )
   };

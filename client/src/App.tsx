@@ -21,12 +21,12 @@ const App = () => {
 
   return (
     accessToken ? (
-      <Flex height={"100vh"} p={2}>
+      <Flex height={"100vh"} >
         <NavBar />
         <Outlet />
       </Flex>
     
-    ) : <Navigate to='/signin' replace={true} />
+    ) : <Navigate to='/login' replace={true} />
     
   )
 };

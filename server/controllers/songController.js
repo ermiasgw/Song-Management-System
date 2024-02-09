@@ -6,10 +6,6 @@ const User = require('../models/User')
 const getAllsongs = async (req, res) => {
     const songs = await Song.find().lean()
 
-    if (!songs?.length) {
-        return res.status(400).json({ message: 'No songs found' })
-    }
-
     const songsWithUser = await Promise.all(songs.map(async (song) => {
         const user = await User.findById(song.user).lean().exec()
         return { ...song, username: user.username }
@@ -32,7 +28,12 @@ const createNewSong = async (req, res) => {
         return res.status(400).json({ message: 'All fields are required' })
     }
 
-    
+    const duplicate = await Song.findOne({ title }).collation({ locale: 'en', strength: 2 }).lean().exec()
+
+    if (duplicate) {
+        return res.status(409).json({ message: 'Duplicate title' })
+    }
+
     const song = await Song.create({ user, title, album, genere })
 
     if (song) {  

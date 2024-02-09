@@ -6,6 +6,7 @@ import { albumReducer } from './album';
 import { userReducer } from './user';
 import { statisticsReducer } from './statistics';
 import { songReducer } from './song';
+import { errorReducer } from './error';
 
 const saga = createSagaMiddleware()
 
@@ -15,6 +16,7 @@ const reducer = combineReducers({
     userReducer,
     statisticsReducer,
     songReducer,
+    errorReducer,
 })
 
 export { authActions } from './auth'

@@ -39,14 +39,14 @@ const { reducer, actions } = createSlice({
       localStorage.removeItem('accessToken');
       state.username = null
       state.roles = []
-      window.location.href = '/signin'
+      window.location.href = '/login'
     },
 
     registerrequest(state, action){
     },
 
     registersuccess(state){
-      window.location.href = '/signin'
+      window.location.href = '/login'
     },
 
     registerfailure(state, action){

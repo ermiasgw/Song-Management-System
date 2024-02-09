@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../store/user";
 import { RootState } from "../../store";
 import { albumActions } from "../../store/album";
-import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { song, songwithuser } from "../../types/song";
 import { songActions } from "../../store/song";
+import { useTheme } from "@emotion/react";
+import { Box, Button, Heading } from "rebass";
 
 const genres = [
     "Pop",
@@ -31,6 +33,7 @@ const schema = z.object({
 })
 
 const SongPage = () => {
+    const theme = useTheme()
     const dispatch = useDispatch()
 
     const {register, handleSubmit, setValue, formState: { errors }} = useForm<song>({
@@ -60,65 +63,82 @@ const SongPage = () => {
     const users = useSelector((state: RootState) => state.userReducer.items)
     const albums = useSelector((state: RootState) => state.albumReducer.items)
     const songs = useSelector((state: RootState) => state.songReducer.items)
+    const error = useSelector((state: RootState) => state.errorReducer.songError);
+    
 
     return (
-      <div>
-        <h1>songs</h1>
+      <Box p={20} width={"100%"}>
+        <Heading>songs</Heading>
         <form onSubmit={handleSubmit(onSubmit)} id="form">
-            <label htmlFor="title">Title</label>
-            <input type="text" id="title" {...register('title')}  />
+            <Box p={2}>
+                <label htmlFor="title">Title: </label>
+                <input type="text" id="title" {...register('title')}  />
+            </Box>
+            
+            <Box p={2}>
+                <label htmlFor="user">Artist: </label>
+                <select {...register('user')}>
+                    <option value={""}></option>
+                    {users.map((user) => (
+                        <option value={user._id}>{user.username}</option>
+                    ))}
+                </select>
+            </Box>
+            
 
-            <label htmlFor="user">Artist</label>
-            <select {...register('user')}>
-                <option value={""}></option>
-                {users.map((user) => (
-                    <option value={user._id}>{user.username}</option>
-                ))}
-            </select>
-            <label htmlFor="album">Album</label>
-            <select {...register('album')}>
-                <option value={""}></option>
-                {albums.map((album) => (
-                    <option value={album._id}>{album.title}</option>
-                ))}
-            </select>
+            <Box p={2}>
+                <label htmlFor="album">Album: </label>
+                <select {...register('album')}>
+                    <option value={""}></option>
+                    {albums.map((album) => (
+                        <option value={album._id}>{album.title}</option>
+                    ))}
+                </select>
+            </Box>
             
-            <label htmlFor="genere">Genre</label>
-            <select {...register('genere')} >
-                {genres.map((genere) => (
-                    <option value={genere}>{genere}</option>
-                ))}
-            </select>
+            <Box p={2}>
+                <label htmlFor="genere">Genre: </label>
+                <select {...register('genere')} >
+                    {genres.map((genere) => (
+                        <option value={genere}>{genere}</option>
+                    ))}
+                </select>
+            </Box>
             
-            <button type="submit">submit</button>
+            {error && <Box color={theme.colors.danger}><p>{error}</p></Box>}
+            
+            <Button bg={theme.colors.primary} ml={4} type="submit">submit</Button>
         </form>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Artist</th>
-                    <th>Album</th>
-                    <th>Genre</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {songs.map((song) => (
+        <Box p={20} mt={20}>
+            <table>
+                <thead>
                     <tr>
-                        <td>{song.title}</td>
-                        <td>{song.username}</td>
-                        <td>{song.album_title}</td>
-                        <td>{song.genere}</td>
-                        <td><a href="#form" onClick={() => handleEdit(song)}>edit</a></td>
-                        <td><button onClick={() => handleDelete(song._id)}>delete</button></td>
+                        <th>Title</th>
+                        <th>Artist</th>
+                        <th>Album</th>
+                        <th>Genre</th>
+                        <th></th>
+                        <th></th>
                     </tr>
-                ))}
-                
-            </tbody>
-        </table>
-      </div>
+                </thead>
+                <tbody>
+                    {songs.map((song) => (
+                        <tr>
+                            <td>{song.title}</td>
+                            <td>{song.username}</td>
+                            <td>{song.album_title}</td>
+                            <td>{song.genere}</td>
+                            <td><a href="#form" onClick={() => handleEdit(song)}>edit</a></td>
+                            <td><Button color={theme.colors.danger} onClick={() => handleDelete(song._id)}>delete</Button></td>
+                        </tr>
+                    ))}
+                    
+                </tbody>
+            </table>
+
+        </Box>
+      </Box>
     )
   };
   

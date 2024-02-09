@@ -3,6 +3,7 @@ import api from './api';
 import { authActions } from '../store';
 import { song, songwithuser } from '../types/song';
 import { songActions } from '../store/song';
+import { errorActions } from '../store/error';
 
 
 
@@ -17,12 +18,13 @@ function* createSong(action: { type: string, payload: song }) {
         }
 
         yield put(songActions.getSongRequest());
+        yield put(errorActions.clearError())
     } catch (error: any) {
         if (error.status === 403) {
             yield put(authActions.refreshrequest())
             yield put(songActions.createSongRequest(action.payload))
         }else {
-            console.error('create song failed:', error);
+            yield put(errorActions.songErrorRequest({songError: error.message}));
         }
         
     }

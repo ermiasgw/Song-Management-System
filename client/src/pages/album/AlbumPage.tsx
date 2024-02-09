@@ -4,6 +4,8 @@ import {z} from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useDispatch } from "react-redux";
 import { albumActions } from "../../store/album";
+import { Box, Button, Heading } from "rebass";
+import { useTheme } from "@emotion/react";
 
 
 const schema = z.object({
@@ -11,6 +13,8 @@ const schema = z.object({
   })
 
 const AlbumPage = () => {
+    const theme = useTheme()
+
     const dispatch = useDispatch()
     const {register, handleSubmit, formState: { errors }} = useForm<album>({
         resolver: zodResolver(schema)
@@ -20,15 +24,16 @@ const AlbumPage = () => {
     }
     
     return (
-        <div>
+        <Box p={20} width={"100%"} >
+            <Heading mb={20}>Albums</Heading>
             <form onSubmit={handleSubmit(onSubmit)}>
-
-                <label>title</label>
-                <input {...register("title")} type="text"/>
-
-                <button type="submit">create</button>
+                <Box>
+                    <label>title: </label>
+                    <input {...register("title")} type="text"/>
+                </Box>
+                <Button m={3} ml={4} bg={theme.colors.primary} type="submit">Create</Button>
             </form>
-        </div>
+        </Box>
         
       )
   };

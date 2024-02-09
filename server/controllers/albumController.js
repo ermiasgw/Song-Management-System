@@ -29,9 +29,6 @@ const createAlbum = async (req, res) => {
 const getAlbums = async (req, res) => {
     const albums = await Album.find().select('-password').lean()
 
-    if (!albums?.length) {
-        return res.status(400).json({ message: 'No albums found' })
-    }
 
     res.json(albums)
 }
