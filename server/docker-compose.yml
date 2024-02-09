@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo-container
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  server:
+    build: .
+    container_name: server-container
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+    environment:
+      DATABASE_URI: mongodb://mongo:27017/song-db
+      PORT: 8000
+      ACCESS_TOKEN_SECRET: 3bb9292f825090496bfc1d02584631625f5c99bfd3654164fc44c2a88dad5e80
+      REFRESH_TOKEN_SECRET: 627dee04e3ffcc5fcde790efa525ae9b190b47e928662b1f4f4aaab5030749c5
+      
+
+volumes:
+  mongo-data:
